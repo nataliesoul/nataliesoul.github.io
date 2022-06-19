@@ -1,68 +1,46 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <title>Dynamic Lights - A-Frame</title>
-    <meta name="description" content="Dynamic Lights - A-Frame">
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
-    <script src="https://unpkg.com/aframe-entity-generator-component@3.0.1/dist/aframe-entity-generator-component.min.js"></script>
-    <script>
-      AFRAME.registerComponent('random-material', {
-        init: function () {
-          this.el.setAttribute('material', {
-            color: this.getRandomColor(),
-            metalness: Math.random(),
-            roughness: Math.random()
-          });
-        },
-
-        getRandomColor: function () {
-          var letters = '0123456789ABCDEF'.split('');
-          var color = '#';
-          for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-          }
-          return color;
-        }
-      });
-
-      AFRAME.registerComponent('random-torus-knot', {
-        init: function () {
-          this.el.setAttribute('geometry', {
-            primitive: 'torusKnot',
-            radius: Math.random() * 10,
-            radiusTubular: Math.random() * .75,
-            p: Math.round(Math.random() * 10),
-            q: Math.round(Math.random() * 10)
-          });
-        }
-      });
-    </script>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+  crossorigin="anonymous"></script>
+    
+    <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-animation-component@3.2.1/dist/aframe-animation-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras.ocean@%5E3.5.x/dist/aframe-extras.ocean.min.js"></script>
   </head>
   <body>
-    <a-scene background="color: #111">
-      <a-assets>
-        <a-mixin id="light"
-                 geometry="primitive: sphere; radius: 1.5"
-                 material="color: #FFF; shader: flat"
-                 light="color: #DDDDFF; distance: 120; intensity: 2; type: point"></a-mixin>
-        <a-mixin id="torusKnot"
-                 random-torus-knot
-                 random-material
-                 random-position="min: -60 -60 -80; max: 60 60 40"></a-mixin>
-      </a-assets>
+        <script src="sketch.js"></script>
+    <a-scene>
+      <a-sky material="shader: gradient; topColor: 100 109 224; bottomColor: 202 238 253" ></a-sky>     
 
-      <!-- Use entity-generator component to generate 120 entities with the torusKnot mixin. -->
-      <a-entity entity-generator="mixin: torusKnot; num: 120"></a-entity>
+      <a-entity id="rain" particle-system="preset: rain; color: #24CAFF; particleCount: 5000"></a-entity>
 
-      <!-- Lights. -->
-      <a-entity animation="property: rotation; to: 0 0 360; dur: 4000; easing: linear; loop: true">
-        <a-entity mixin="light" position="30 0 0"></a-entity>
-      </a-entity>
 
-      <a-entity animation="property: rotation; to: 360 0 0; dur: 4000; easing: linear; loop: true">
-        <a-entity mixin="light" position="0 0 40"></a-entity>
-      </a-entity>
+
+      <a-entity id="sphere" geometry="primitive: sphere"
+                
+                
+                position="0 0.15 -5"
+                
+                animation="property: position; easing: easeInOutQuad; dir: alternate; dur: 1000; to: 0 -0.10 -5; loop: true"></a-entity>
+
+      <a-entity id="ocean" ocean="density: 10; width: 50; depth: 10; speed: 4"
+                material="color: #9CE3F9; opacity: 0.75; metalness: 0; roughness: 1"
+                rotation="-90 5 0"></a-entity>
+
+
+             
+               
+                <!--<a-gltf-model src="#boat"></a-gltf-model>
+                <a-gltf-model src="assets/models/sailboat/boat.gltf" gltf-model="assets/models/sailboat/boat.gltf" scale="0.2 0.2 0.2" rotation="-0.05 0 0"></a-gltf-model>
+                <a-gltf-model src="assets/models/sailboat/sails3.gltf" gltf-model="assets/models/sailboat/sails3.gltf" scale="" rotation="-0.05 0 0"></a-gltf-model>-->
+                <a-gltf-model src="assets/models/sailboat/sailboat.gltf" gltf-model="assets/models/sailboat/sailboat.gltf" position="-9.231 0.174 -5.039" scale="0.5 0.7 0.5" rotation="0 0 0" animation="property: position; easing: easeInOutQuad; dir: alternate; dur: 9000; to: -2 0.90 5; loop: true"></a-gltf-model>
+     <!-- <a-entity id="light" light="type: ambient; color: turquoise"></a-entity> -->
     </a-scene>
+
+    
   </body>
 </html>
+
